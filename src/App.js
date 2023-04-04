@@ -1,23 +1,70 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+import "./App.css";
+import Header from "./components/Header";
+import TodoHead from "./components/TodoHead";
+import { ToDos } from "./components/ToDos";
 function App() {
+  const [todoList, setTodoList] = useState({
+    schedule: [],
+    completed: [],
+  });
+  function addBackToSchedule(todo) {
+    setTodoList((prev) => {
+      const todosFromCompleted = prev.completed.filter((el) => {
+        return el !== todo;
+      });
+
+      return {
+        schedule: [...prev.schedule, todo],
+        completed: todosFromCompleted,
+      };
+    });
+  }
+
+  function removeFromCompleted(Todo) {
+    setTodoList((prev) => {
+      const removeTodo = prev.completed.filter((el) => {
+        return el !== Todo;
+      });
+
+      return {
+        schedule: prev.schedule,
+        completed: removeTodo,
+      };
+    });
+  }
+  function addToCompleted(todo) {
+    setTodoList((prev) => {
+      const newSchedule = prev.schedule.filter((el) => {
+        return el !== todo;
+      });
+      return {
+        schedule: newSchedule,
+        completed: [...prev.completed, todo],
+      };
+    });
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <div className="todoInput">
+        <TodoHead setTodoList={setTodoList} />
+      </div>
+
+      <div className="todoBody">
+        <ToDos
+          toDos={todoList.schedule}
+          addToCompleted={addToCompleted}
+          type="schedule"
+        />
+        <ToDos
+          toDos={todoList.completed}
+          addToCompleted={addToCompleted}
+          type="completed"
+          removeFromCompleted={removeFromCompleted}
+          addBackToSchedule={addBackToSchedule}
+        />
+      </div>
     </div>
   );
 }

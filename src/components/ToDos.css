@@ -1,0 +1,44 @@
+.todoListContainer {
+  border: 0.5px solid #333333;
+  border-radius: 10px;
+  min-height: 400px;
+  padding: 10px;
+}
+.todoListContainer h2 {
+  color: #333333;
+  text-align: center;
+}
+.todoL {
+  width: 48%;
+}
+.todoR {
+  width: 48%;
+}
+.ToDos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border: 1px solid #333333;
+  padding: 10px;
+  border-radius: 5px;
+}
+li {
+  list-style: none;
+  margin-right: 10px;
+}
+.btn {
+  background-color: #333333;
+  color: white;
+  border: 1px solid #333333;
+  width: 60px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.completed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
