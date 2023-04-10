@@ -1,28 +1,49 @@
+import { memo } from "react";
 import "./ToDos.css";
-function ToDos({
-  toDos,
-  addToCompleted,
-  type,
-  removeFromCompleted,
-  addBackToSchedule,
-}) {
+
+function ToDos({ toDos, section, setTodoList }) {
+  function handleTodoTransition(todo, todoSection) {
+    setTodoList((prev) => {
+      const filtered = prev[todoSection].filter((el) => el !== todo);
+      return {
+        schedule:
+          todoSection === "schedule" ? filtered : [...prev.schedule, todo],
+        completed:
+          todoSection === "completed" ? filtered : [...prev.completed, todo],
+      };
+    });
+  }
+
+  function removeFromCompleted(Todo) {
+    setTodoList((prev) => {
+      const removeTodo = prev.completed.filter((el) => {
+        return el !== Todo;
+      });
+
+      return {
+        schedule: prev.schedule,
+        completed: removeTodo,
+      };
+    });
+  }
+
   return (
     <div className="todoL todoListContainer">
-      <h2>{type === "schedule" ? "Schedule" : "Completed"}</h2>
+      <h2>{section === "schedule" ? "Schedule" : "Completed"}</h2>
 
-      {toDos.map((el, i) => {
+      {toDos.map((todo, i) => {
         return (
           <div className="ToDos" key={i}>
             <ul>
-              <li>{el}</li>
+              <li>{todo}</li>
             </ul>
 
             <div>
-              {type === "schedule" ? (
+              {section === "schedule" ? (
                 <button
                   className="btn add"
                   onClick={() => {
-                    addToCompleted(el);
+                    handleTodoTransition(todo, "schedule");
                   }}
                 >
                   complete
@@ -32,7 +53,7 @@ function ToDos({
                   <button
                     className="btn addBack"
                     onClick={() => {
-                      return removeFromCompleted(el);
+                      return removeFromCompleted(todo);
                     }}
                   >
                     remove
@@ -40,7 +61,7 @@ function ToDos({
                   <button
                     className="btn remove"
                     onClick={() => {
-                      return addBackToSchedule(el);
+                      return handleTodoTransition(todo, "completed");
                     }}
                   >
                     add back
@@ -54,4 +75,4 @@ function ToDos({
     </div>
   );
 }
-export { ToDos };
+export default memo(ToDos);
